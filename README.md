@@ -79,3 +79,188 @@ Welcome to your go-to resource hub for building, scaling, and optimizing online 
 
 **Created with 💡 by [debeatzgh1](https://github.com/debeatzgh1) — Your gateway to digital entrepreneurship and AI-powered growth.**
 
+
+<style>
+/* Fade + slide animation */
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* ❤️ Heartbeat animation */
+@keyframes heartbeat {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.12); }
+  50% { transform: scale(1); }
+  70% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+.floating-btn-group {
+  animation: fadeSlideUp 0.6s ease-out forwards;
+}
+
+.floating-btn {
+  animation: heartbeat 1.2s ease-in-out infinite;
+  animation-delay: 3s;
+}
+
+/* Iframe modal */
+#iframeModal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  z-index: 10000;
+  display: none;
+}
+
+#iframeModal iframe {
+  width: 100%;
+  height: 120%;
+  border: none;
+  background: #fff;
+}
+
+/* Modal controls */
+.modal-controls {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  gap: 10px;
+  z-index: 10001;
+}
+
+.modal-btn {
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 8px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  /* Floating button group */
+  const btnGroup = document.createElement("div");
+  btnGroup.className = "floating-btn-group";
+  Object.assign(btnGroup.style, {
+    position: "fixed",
+    bottom: "16px",
+    left: "50%",
+    transform: "translateX(-50%)",
+    display: "flex",
+    gap: "10px",
+    zIndex: "9999",
+    background: "rgba(0,0,0,0.12)",
+    padding: "6px 10px",
+    borderRadius: "12px",
+    boxShadow: "0 4px 8px rgba(0,0,0,0.25)"
+  });
+
+  /* Iframe modal */
+  const modal = document.createElement("div");
+  modal.id = "iframeModal";
+
+  const iframe = document.createElement("iframe");
+  modal.appendChild(iframe);
+
+  /* Modal controls */
+  const controls = document.createElement("div");
+  controls.className = "modal-controls";
+
+  const fullscreenBtn = document.createElement("button");
+  fullscreenBtn.className = "modal-btn";
+  fullscreenBtn.innerHTML = "⛶";
+
+  const closeBtn = document.createElement("button");
+  closeBtn.className = "modal-btn";
+  closeBtn.innerHTML = "✖";
+
+  controls.appendChild(fullscreenBtn);
+  controls.appendChild(closeBtn);
+
+  document.body.appendChild(modal);
+  document.body.appendChild(controls);
+
+  controls.style.display = "none";
+
+  closeBtn.onclick = () => {
+    modal.style.display = "none";
+    controls.style.display = "none";
+    iframe.src = "";
+  };
+
+  fullscreenBtn.onclick = () => {
+    if (iframe.requestFullscreen) iframe.requestFullscreen();
+  };
+
+  const buttons = [
+    {
+      text: "🔥 Guides",
+      link: "https://debeatzgh1.github.io/Curated-Guides-for-Online-Business-AI-Product-Creation/",
+      bg: "#1e90ff"
+    },
+    {
+      text: "💬 Docs",
+      link: "https://debeatzgh1.github.io/-Floating-Dock-Smart-Iframe-Modal/",
+      bg: "#28a745"
+    },
+    {
+      text: "📞 Content",
+      link: "https://debeatzgh1.github.io/Docs-Carousel-for-Blogger/",
+      bg: "#ff6600"
+    }
+  ];
+
+  buttons.forEach(btn => {
+    const a = document.createElement("a");
+    a.className = "floating-btn";
+    a.href = "javascript:void(0)";
+    a.innerText = btn.text;
+
+    Object.assign(a.style, {
+      background: btn.bg,
+      color: "#fff",
+      padding: "6px 12px",
+      borderRadius: "20px",
+      textDecoration: "none",
+      fontSize: "12px",
+      fontWeight: "500",
+      whiteSpace: "nowrap",
+      boxShadow: "0 2px 6px rgba(0,0,0,0.25)",
+      cursor: "pointer"
+    });
+
+    a.onclick = () => {
+      iframe.src = btn.link;
+      modal.style.display = "block";
+      controls.style.display = "flex";
+    };
+
+    btnGroup.appendChild(a);
+  });
+
+  document.body.appendChild(btnGroup);
+
+  /* Restart heartbeat every 3s */
+  setInterval(() => {
+    document.querySelectorAll(".floating-btn").forEach(btn => {
+      btn.style.animation = "none";
+      btn.offsetHeight;
+      btn.style.animation = "heartbeat 1.2s ease-in-out";
+    });
+  }, 3000);
+
+});
+</script>
