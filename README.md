@@ -81,187 +81,209 @@ Welcome to your go-to resource hub for building, scaling, and optimizing online 
 
 
 <style>
-/* Fade + slide animation */
-@keyframes fadeSlideUp {
-  from {
-    opacity: 0;
-    transform: translateX(-50%) translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
+/* --- 1. COMMAND CONTROLS (Top-Left) --- */
+.modal-controls {
+  position: fixed;
+  top: 15px;
+  left: 15px; /* Moved to top-left as requested */
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  z-index: 10001;
+  background: rgba(15, 15, 20, 0.8);
+  padding: 8px;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 242, 255, 0.3);
+  display: none; /* Only visible when Iframe is open */
 }
 
-/* ❤️ Heartbeat animation */
-@keyframes heartbeat {
-  0% { transform: scale(1); }
-  30% { transform: scale(1.12); }
-  50% { transform: scale(1); }
-  70% { transform: scale(1.15); }
-  100% { transform: scale(1); }
+.modal-btn {
+  background: transparent;
+  color: #00f2ff;
+  border: 1px solid rgba(0, 242, 255, 0.2);
+  width: 35px;
+  height: 35px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s;
 }
 
-.floating-btn-group {
-  animation: fadeSlideUp 0.6s ease-out forwards;
+.modal-btn:hover {
+  background: #00f2ff;
+  color: #000;
+  box-shadow: 0 0 15px rgba(0, 242, 255, 0.5);
 }
 
-.floating-btn {
-  animation: heartbeat 1.2s ease-in-out infinite;
-  animation-delay: 3s;
+/* --- 2. THIN NAVIGATION INDICATORS --- */
+.nav-indicators {
+  position: fixed;
+  right: 25px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  z-index: 9000;
 }
 
-/* Iframe modal */
+.nav-arrow {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.2);
+  transition: 0.5s;
+  text-align: center;
+}
+
+.nav-arrow.active {
+  color: #00f2ff;
+  text-shadow: 0 0 10px #00f2ff;
+  transform: scale(1.3);
+}
+
+/* --- 3. PREMIUM IFRAME CONTAINER --- */
 #iframeModal {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.85);
+  background: rgba(5, 5, 7, 0.95);
   z-index: 10000;
   display: none;
+  padding: 40px 15px 15px 15px; /* Extra top padding for controls */
+}
+
+.iframe-wrapper {
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  border: 2px solid #00f2ff;
+  overflow: hidden;
+  box-shadow: 0 0 40px rgba(0, 242, 255, 0.15);
+  background: #fff;
 }
 
 #iframeModal iframe {
   width: 100%;
-  height: 120%;
+  height: 100%;
   border: none;
-  background: #fff;
 }
 
-/* Modal controls */
-.modal-controls {
-  position: fixed;
-  top: 12px;
-  right: 12px;
-  display: flex;
-  gap: 10px;
-  z-index: 10001;
+/* ❤️ Heartbeat animation for Floating Dock */
+@keyframes heartbeat {
+  0% { transform: scale(1); }
+  15% { transform: scale(1.1); }
+  30% { transform: scale(1); }
 }
 
-.modal-btn {
-  background: #000;
-  color: #fff;
-  border: none;
-  padding: 8px 10px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 14px;
+.floating-btn {
+  animation: heartbeat 1.5s ease-in-out infinite;
 }
 </style>
 
+<div class="container" style="max-width:900px; margin:auto; padding:20px; color:#fff; background:#0f172a; font-family:sans-serif;">
+  <h1 style="text-align:center;">🚀 Curated Guides for Online Business</h1>
+  
+  <div class="nav-indicators">
+    <div id="arrow-up" class="nav-arrow"><i class="fas fa-chevron-up"></i><br>UP</div>
+    <div id="arrow-down" class="nav-arrow">DOWN<br><i class="fas fa-chevron-down"></i></div>
+  </div>
+
+  <table width="100%" style="border-collapse: separate; border-spacing: 0 20px;">
+    </table>
+</div>
+
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-
-  /* Floating button group */
-  const btnGroup = document.createElement("div");
-  btnGroup.className = "floating-btn-group";
-  Object.assign(btnGroup.style, {
-    position: "fixed",
-    bottom: "16px",
-    left: "50%",
-    transform: "translateX(-50%)",
-    display: "flex",
-    gap: "10px",
-    zIndex: "9999",
-    background: "rgba(0,0,0,0.12)",
-    padding: "6px 10px",
-    borderRadius: "12px",
-    boxShadow: "0 4px 8px rgba(0,0,0,0.25)"
-  });
-
-  /* Iframe modal */
+  // 1. Setup Iframe & Controls
   const modal = document.createElement("div");
   modal.id = "iframeModal";
-
+  const wrapper = document.createElement("div");
+  wrapper.className = "iframe-wrapper";
   const iframe = document.createElement("iframe");
-  modal.appendChild(iframe);
+  wrapper.appendChild(iframe);
+  modal.appendChild(wrapper);
 
-  /* Modal controls */
   const controls = document.createElement("div");
   controls.className = "modal-controls";
-
-  const fullscreenBtn = document.createElement("button");
-  fullscreenBtn.className = "modal-btn";
-  fullscreenBtn.innerHTML = "⛶";
-
-  const closeBtn = document.createElement("button");
-  closeBtn.className = "modal-btn";
-  closeBtn.innerHTML = "✖";
-
-  controls.appendChild(fullscreenBtn);
-  controls.appendChild(closeBtn);
+  controls.innerHTML = `
+    <button class="modal-btn" onclick="closeM()"><i class="fas fa-times"></i></button>
+    <button class="modal-btn" onclick="toggleFS()"><i class="fas fa-expand"></i></button>
+  `;
 
   document.body.appendChild(modal);
   document.body.appendChild(controls);
 
-  controls.style.display = "none";
-
-  closeBtn.onclick = () => {
+  window.closeM = () => {
     modal.style.display = "none";
     controls.style.display = "none";
     iframe.src = "";
   };
 
-  fullscreenBtn.onclick = () => {
-    if (iframe.requestFullscreen) iframe.requestFullscreen();
+  window.toggleFS = () => {
+    if (!document.fullscreenElement) {
+      wrapper.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
   };
 
-  const buttons = [
-    {
-      text: "🔥 Guides",
-      link: "https://debeatzgh1.github.io/Home-/",
-      bg: "#1e90ff"
-    },
-    {
-      text: "💬 Docs",
-      link: "https://debeatzgh1.github.io/-Floating-Dock-Smart-Iframe-Modal/",
-      bg: "#28a745"
-    },
-    {
-      text: "📞 BLOGS",
-      link: "https://appdategh1.blogspot.com/",
-      bg: "#ff6600"
-    }
-  ];
-
-  buttons.forEach(btn => {
-    const a = document.createElement("a");
-    a.className = "floating-btn";
-    a.href = "javascript:void(0)";
-    a.innerText = btn.text;
-
-    Object.assign(a.style, {
-      background: btn.bg,
-      color: "#fff",
-      padding: "6px 12px",
-      borderRadius: "20px",
-      textDecoration: "none",
-      fontSize: "12px",
-      fontWeight: "500",
-      whiteSpace: "nowrap",
-      boxShadow: "0 2px 6px rgba(0,0,0,0.25)",
-      cursor: "pointer"
-    });
-
-    a.onclick = () => {
-      iframe.src = btn.link;
+  // 2. Link Interception (Open in Iframe)
+  document.querySelectorAll('a[href*="blogspot.com"]').forEach(link => {
+    link.onclick = (e) => {
+      e.preventDefault();
+      iframe.src = link.href;
       modal.style.display = "block";
       controls.style.display = "flex";
     };
-
-    btnGroup.appendChild(a);
   });
 
-  document.body.appendChild(btnGroup);
+  // 3. Auto-Slide Indicators (Every 3 Seconds)
+  const up = document.getElementById('arrow-up');
+  const down = document.getElementById('arrow-down');
+  let step = 0;
 
-  /* Restart heartbeat every 3s */
   setInterval(() => {
-    document.querySelectorAll(".floating-btn").forEach(btn => {
-      btn.style.animation = "none";
-      btn.offsetHeight;
-      btn.style.animation = "heartbeat 1.2s ease-in-out";
-    });
+    if (step === 0) {
+      up.classList.add('active');
+      down.classList.remove('active');
+      step = 1;
+    } else {
+      down.classList.add('active');
+      up.classList.remove('active');
+      step = 0;
+    }
   }, 3000);
 
+  // 4. Floating Dock (Bottom Center)
+  const dock = document.createElement("div");
+  Object.assign(dock.style, {
+    position: "fixed", bottom: "20px", left: "50%", transform: "translateX(-50%)",
+    display: "flex", gap: "10px", zIndex: "9999", padding: "10px",
+    background: "rgba(0,0,0,0.5)", borderRadius: "50px", backdropFilter: "blur(10px)"
+  });
+
+  const btnData = [
+    { text: "Guides", url: "https://debeatzgh1.github.io/Home-/", color: "#2b7cff" },
+    { text: "Docs", url: "https://debeatzgh1.github.io/-Floating-Dock-Smart-Iframe-Modal/", color: "#00b894" }
+  ];
+
+  btnData.forEach(data => {
+    const btn = document.createElement("button");
+    btn.innerText = data.text;
+    btn.className = "floating-btn";
+    Object.assign(btn.style, {
+      padding: "8px 20px", borderRadius: "20px", border: "none", color: "#fff",
+      background: data.color, cursor: "pointer", fontWeight: "bold", fontSize: "12px"
+    });
+    btn.onclick = () => {
+      iframe.src = data.url;
+      modal.style.display = "block";
+      controls.style.display = "flex";
+    };
+    dock.appendChild(btn);
+  });
+  document.body.appendChild(dock);
 });
 </script>
-
