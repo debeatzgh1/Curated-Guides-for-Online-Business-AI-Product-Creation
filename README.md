@@ -1,4 +1,4 @@
-## Repo Title
+
 
 **Curated Guides for Online Business & AI Product Creation**
 
@@ -218,7 +218,7 @@ document.addEventListener("DOMContentLoaded", function () {
     },
     {
       text: "📞 BLOGS",
-      link: "https://debeatzgh1.github.io/blogs/",
+      link: "https://appdategh1.blogspot.com/",
       bg: "#ff6600"
     }
   ];
