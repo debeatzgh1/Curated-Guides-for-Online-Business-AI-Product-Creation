@@ -1,4 +1,761 @@
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>Main menu</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+<style>
+
+:root{
+    --bg:#081120;
+    --card:#0f172a;
+    --card2:#13203a;
+    --primary:#00e5ff;
+    --secondary:#6366f1;
+    --text:#f8fafc;
+    --muted:#94a3b8;
+    --border:rgba(255,255,255,.08);
+}
+
+/* =========================
+RESET
+========================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:'Inter',sans-serif;
+    background:linear-gradient(180deg,#050b16,#081120,#0b1728);
+    color:var(--text);
+    min-height:200vh;
+    overflow-x:hidden;
+}
+
+/* =========================
+DEMO CONTENT
+========================= */
+
+.demo-section{
+    padding:140px 7% 120px;
+    text-align:center;
+}
+
+.demo-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:12px 20px;
+    border-radius:999px;
+    background:rgba(0,229,255,.08);
+    border:1px solid rgba(0,229,255,.15);
+    color:#a5f3fc;
+    margin-bottom:25px;
+    font-size:.85rem;
+}
+
+.demo-section h1{
+    font-size:clamp(2.8rem,8vw,5rem);
+    line-height:1.05;
+    margin-bottom:24px;
+    font-weight:900;
+}
+
+.demo-section h1 span{
+    background:linear-gradient(90deg,var(--primary),#818cf8);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.demo-section p{
+    max-width:760px;
+    margin:auto;
+    color:var(--muted);
+    line-height:1.9;
+    font-size:1.05rem;
+}
+
+/* =========================
+TRIGGER BUTTON
+========================= */
+
+.sidebar-trigger{
+    position:fixed;
+    top:25px;
+    right:25px;
+    width:20px;
+    height:20px;
+    border:none;
+    border-radius:24px;
+    background:linear-gradient(135deg,var(--primary),var(--secondary));
+    color:#00111a;
+    font-size:1.6rem;
+    cursor:pointer;
+    z-index:99999;
+    box-shadow:0 20px 45px rgba(0,229,255,.3);
+    transition:.35s ease;
+    animation:heartbeat 4s infinite;
+}
+
+.sidebar-trigger:hover{
+    transform:translateY(-5px) scale(1.04);
+}
+
+@keyframes heartbeat{
+    0%{transform:scale(1);}
+    10%{transform:scale(1.08);}
+    20%{transform:scale(1);}
+    30%{transform:scale(1.08);}
+    40%{transform:scale(1);}
+}
+
+/* =========================
+OVERLAY
+========================= */
+
+.sidebar-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(3,8,18,.92);
+    backdrop-filter:blur(20px);
+    z-index:99998;
+    display:flex;
+    justify-content:flex-end;
+    opacity:0;
+    visibility:hidden;
+    transition:.45s ease;
+}
+
+.sidebar-overlay.active{
+    opacity:1;
+    visibility:visible;
+}
+
+/* =========================
+SIDEBAR PANEL
+========================= */
+
+.sidebar-panel{
+    width:min(92%,420px);
+    height:90%;
+    background:linear-gradient(180deg,#0f172a,#111c33);
+    border-left:1px solid rgba(255,255,255,.08);
+    padding:30px;
+    overflow-y:auto;
+    transform:translateX(100%);
+    transition:.45s ease;
+    position:relative;
+}
+
+.sidebar-overlay.active .sidebar-panel{
+    transform:translateX(0);
+}
+
+/* =========================
+HEADER
+========================= */
+
+.sidebar-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:35px;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.logo-icon{
+    width:52px;
+    height:52px;
+    border-radius:18px;
+    background:linear-gradient(135deg,var(--primary),var(--secondary));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:1.3rem;
+    color:#00111a;
+}
+
+.logo h2{
+    font-size:1rem;
+    font-weight:800;
+}
+
+.logo p{
+    color:var(--muted);
+    font-size:.75rem;
+}
+
+.close-btn{
+    width:44px;
+    height:44px;
+    border:none;
+    border-radius:14px;
+    background:rgba(255,255,255,.06);
+    color:white;
+    cursor:pointer;
+    font-size:1rem;
+}
+
+/* =========================
+INFO CARD
+========================= */
+
+.info-card{
+    background:rgba(255,255,255,.03);
+    border:1px solid rgba(255,255,255,.06);
+    border-radius:26px;
+    padding:24px;
+    margin-bottom:30px;
+}
+
+.info-card h3{
+    font-size:1.2rem;
+    margin-bottom:12px;
+}
+
+.info-card p{
+    color:var(--muted);
+    line-height:1.8;
+    font-size:.95rem;
+}
+
+/* =========================
+MENU LIST
+========================= */
+
+.menu-list{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+.menu-item{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    padding:20px;
+    border-radius:24px;
+    text-decoration:none;
+    color:white;
+    background:rgba(255,255,255,.03);
+    border:1px solid rgba(255,255,255,.05);
+    transition:.35s ease;
+    opacity:0;
+    transform:translateX(20px);
+}
+
+.sidebar-overlay.active .menu-item{
+    opacity:1;
+    transform:translateX(0);
+}
+
+.menu-item:nth-child(1){transition-delay:.1s;}
+.menu-item:nth-child(2){transition-delay:.18s;}
+.menu-item:nth-child(3){transition-delay:.26s;}
+.menu-item:nth-child(4){transition-delay:.34s;}
+.menu-item:nth-child(5){transition-delay:.42s;}
+
+.menu-item:hover{
+    transform:translateY(-5px);
+    border-color:rgba(0,229,255,.22);
+    background:rgba(0,229,255,.05);
+}
+
+.menu-icon{
+    min-width:42px;
+    height:42px;
+    border-radius:20px;
+    background:linear-gradient(135deg,var(--primary),#818cf8);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:1.3rem;
+    color:#00111a;
+}
+
+.menu-text h4{
+    font-size:1rem;
+    margin-bottom:6px;
+}
+
+.menu-text p{
+    color:var(--muted);
+    font-size:.86rem;
+    line-height:1.7;
+}
+
+/* =========================
+SUGGESTIONS
+========================= */
+
+.suggestions{
+    margin-top:40px;
+}
+
+.suggestions h3{
+    margin-bottom:20px;
+    font-size:1.1rem;
+}
+
+.suggestion-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.suggestion-card{
+    background:rgba(255,255,255,.03);
+    border:1px solid rgba(255,255,255,.06);
+    border-radius:22px;
+    padding:20px;
+}
+
+.suggestion-card i{
+    font-size:1.5rem;
+    margin-bottom:16px;
+    color:#67e8f9;
+}
+
+.suggestion-card h4{
+    margin-bottom:10px;
+}
+
+.suggestion-card p{
+    color:var(--muted);
+    line-height:1.7;
+    font-size:.85rem;
+}
+
+/* =========================
+SLOW POPUP
+========================= */
+
+.slow-popup{
+    position:fixed;
+    left:50%;
+    bottom:110px;
+    transform:translateX(-50%);
+    width:min(92%,420px);
+    background:rgba(15,23,42,.95);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:28px;
+    padding:24px;
+    z-index:99997;
+    opacity:0;
+    visibility:hidden;
+    transition:1s ease;
+    box-shadow:0 20px 60px rgba(0,0,0,.4);
+}
+
+.slow-popup.active{
+    opacity:1;
+    visibility:visible;
+    bottom:130px;
+}
+
+.slow-popup h3{
+    margin-bottom:10px;
+}
+
+.slow-popup p{
+    color:var(--muted);
+    line-height:1.8;
+    margin-bottom:18px;
+}
+
+.popup-btn{
+    width:100%;
+    border:none;
+    padding:15px;
+    border-radius:16px;
+    background:linear-gradient(135deg,var(--primary),var(--secondary));
+    color:#00111a;
+    font-weight:800;
+    cursor:pointer;
+}
+
+/* =========================
+MOBILE
+========================= */
+
+@media(max-width:768px){
+
+.sidebar-trigger{
+    width:44px;
+    height:44px;
+    right:18px;
+    bottom:18px;
+}
+
+.sidebar-panel{
+    width:100%;
+}
+
+.suggestion-grid{
+    grid-template-columns:1fr;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- DEMO CONTENT -->
+<section class="demo-section">
+
+    <div class="demo-badge">
+        <i class="fas fa-bolt"></i>
+        Reusable GitHub Widget
+    </div>
+
+    <h1>
+        Modern Sidebar
+        <span>Overlay System</span>
+    </h1>
+
+    <p>
+        Professional floating sidebar trigger optimized for GitHub Pages,
+        personal portfolios, AI startups, blogging hubs,
+        affiliate stores, digital products, and reusable widget systems.
+    </p>
+
+</section>
+
+<!-- SIDEBAR TRIGGER -->
+<button class="sidebar-trigger"
+onclick="toggleSidebar()">
+
+    <i class="fas fa-layer-group"></i>
+
+</button>
+
+<!-- OVERLAY -->
+<div class="sidebar-overlay"
+id="sidebarOverlay">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar-panel">
+
+        <!-- HEADER -->
+        <div class="sidebar-header">
+
+            <div class="logo">
+
+                <div class="logo-icon">
+                    <i class="fas fa-robot"></i>
+                </div>
+
+                <div>
+                    <h2>links Hub</h2>
+                    <p>Premium Navigation Overlay</p>
+                </div>
+
+            </div>
+
+            <button class="close-btn"
+            onclick="toggleSidebar()">
+
+                <i class="fas fa-times"></i>
+
+            </button>
+
+        </div>
+
+        <!-- INFO -->
+        <div class="info-card">
+
+            <h3>
+                Explore Digital Ecosystem
+            </h3>
+
+            <p>
+                Open premium pages, starter kits,
+                blog resources, portfolio systems,
+                and reusable GitHub experiences.
+            </p>
+
+        </div>
+
+        <!-- MENU -->
+        <div class="menu-list">
+
+            <!-- BLOGs -->
+            <a class="menu-item"
+            href="https://debeatzgh1.github.io/blogs"
+            target="_blank"
+            loading="lazy">
+
+                <div class="menu-icon">
+                    <i class="fas fa-blog"></i>
+                </div>
+
+                <div class="menu-text">
+                    <h4>Blog</h4>
+                    <p>
+                        AI articles, blogging resources,
+                        side hustles, and digital growth content.
+                    </p>
+                </div>
+
+            </a>
+
+            <!-- HOME -->
+            <a class="menu-item"
+            href="https://debeatzgh1.github.io/Home-/"
+            target="_blank">
+
+                <div class="menu-icon">
+                    <i class="fas fa-house"></i>
+                </div>
+
+                <div class="menu-text">
+                    <h4>Home Page</h4>
+                    <p>
+                        Main ecosystem dashboard
+                        with projects, links, and premium resources.
+                    </p>
+                </div>
+
+            </a>
+
+            <!-- Postfeed -->
+            <a class="menu-item"
+            href="https://debeatzgh1.github.io/posts/"
+            target="_blank">
+
+                <div class="menu-icon">
+                    <i class="fas fa-layer-group"></i>
+                </div>
+
+                <div class="menu-text">
+                    <h4>Pages</h4>
+                    <p>
+                        Explore curated GitHub pages,
+                        modern UI layouts, and creator systems.
+                    </p>
+                </div>
+
+            </a>
+
+            <!-- STARTER KITS -->
+            <a class="menu-item"
+            href="https://debeatzgh1.github.io/TechAdapt-Solutions-Strategies-for-Modern-Startups-and-Individuals/"
+            target="_blank">
+
+                <div class="menu-icon">
+                    <i class="fas fa-box-open"></i>
+                </div>
+
+                <div class="menu-text">
+                    <h4>Starter Kits</h4>
+                    <p>
+                        AI starter kits, productivity systems,
+                        and beginner digital resources.
+                    </p>
+                </div>
+
+            </a>
+
+            <!-- SUGGESTED -->
+            <a class="menu-item"
+            href="https://debeatzgh1.github.io/firebase-front-end-components/"
+            target="_blank">
+
+                <div class="menu-icon">
+                    <i class="fas fa-lightbulb"></i>
+                </div>
+
+                <div class="menu-text">
+                    <h4>Suggested</h4>
+                    <p>
+                        Recommended side hustle guides,
+                        online income systems, and AI business ideas.
+                    </p>
+                </div>
+
+            </a>
+
+        </div>
+
+        <!-- SUGGESTIONS -->
+        <div class="suggestions">
+
+            <h3>
+                Featured Widgets
+            </h3>
+
+            <div class="suggestion-grid">
+
+                <div class="suggestion-card">
+
+                    <i class="fas fa-code"></i>
+
+                    <h4>Reusable Components</h4>
+
+                    <p>
+                        Build scalable UI systems
+                        for GitHub and Blogger integration.
+                    </p>
+
+                </div>
+
+                <div class="suggestion-card">
+
+                    <i class="fas fa-wand-magic-sparkles"></i>
+
+                    <h4>AI Interfaces</h4>
+
+                    <p>
+                        Modern AI layouts,
+                        overlays, and chatbot experiences.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- SLOW POPUP -->
+<div class="slow-popup"
+id="slowPopup">
+
+    <h3>
+        Welcome to premium links hub
+    </h3>
+
+    <p>
+        Open the floating sidebar to explore
+        premium GitHub pages, AI starter kits,
+        blog resources, and reusable widgets.
+    </p>
+
+    <button class="popup-btn"
+    onclick="toggleSidebar()">
+
+        Open Sidebar Menu
+
+    </button>
+
+</div>
+
+<script>
+
+/* =========================
+TOGGLE SIDEBAR
+========================= */
+
+function toggleSidebar(){
+
+    document
+    .getElementById('sidebarOverlay')
+    .classList
+    .toggle('active');
+
+}
+
+/* =========================
+CLOSE WHEN OUTSIDE CLICK
+========================= */
+
+document
+.getElementById('sidebarOverlay')
+.addEventListener('click',function(e){
+
+    if(e.target === this){
+
+        this.classList.remove('active');
+
+    }
+
+});
+
+/* =========================
+SLOW POPUP
+========================= */
+
+setTimeout(()=>{
+
+    document
+    .getElementById('slowPopup')
+    .classList
+    .add('active');
+
+},5000);
+
+/* =========================
+REMOVE POPUP AFTER OPEN
+========================= */
+
+document
+.querySelector('.popup-btn')
+.addEventListener('click',()=>{
+
+    document
+    .getElementById('slowPopup')
+    .classList
+    .remove('active');
+
+});
+
+/* =========================
+LAZY LOAD EFFECT
+========================= */
+
+const observer=new IntersectionObserver((entries)=>{
+
+    entries.forEach(entry=>{
+
+        if(entry.isIntersecting){
+
+            entry.target.style.opacity='1';
+            entry.target.style.transform='translateY(0)';
+
+        }
+
+    });
+
+});
+
+document.querySelectorAll('.suggestion-card').forEach(card=>{
+
+    card.style.opacity='0';
+    card.style.transform='translateY(20px)';
+    card.style.transition='1s ease';
+
+    observer.observe(card);
+
+});
+
+</script>
+
+</body>
+</html>
 
 **Curated Guides for Online Business & AI Product Creation**
 
